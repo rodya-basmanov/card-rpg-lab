@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include <iostream>
 
 Entity::Entity(const std::string& name, int health, int mana) : name(name), health(health), mana(mana) {
     if (health > MAX_HEALTH) this->health = MAX_HEALTH; 
@@ -13,12 +14,12 @@ void Entity::heal(int amount) {
 void Entity::takeDamage(int damage) {
     health -= damage;
     if (health < 0) health = 0;
-    std::cout << name << " took " << damage << " damage" << std::endl;
+    std::cout << name << " took " << damage << " damage!" << std::endl;
 }
 void Entity::reduceMana(int amount) {
     mana -= amount;
     if (mana < 0) mana = 0;
-    std::cout << name << " spent " << amount << " mana" << std::endl;
+    std::cout << name << " spent " << amount << " mana!" << std::endl;
 }
 
 int Entity::getHealth() const {
