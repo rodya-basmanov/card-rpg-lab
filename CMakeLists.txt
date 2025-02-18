@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(card-rpg-lab
     src/Entity.cpp
-    src/main.cpp
 )
 
 target_include_directories(card-rpg-lab PUBLIC include)
