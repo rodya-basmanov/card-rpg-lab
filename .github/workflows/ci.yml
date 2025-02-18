@@ -19,13 +19,20 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y g++ cmake make libgtest-dev
 
+    - name: Create build directory
+      run: mkdir -p build
+
+    - name: Configure project
+      working-directory: build
+      run: cmake ..
+
     - name: Build project
-      run: |
-        mkdir -p build
-        cd build
-        cmake ..
-        make
+      working-directory: build
+      run: make
 
     - name: Run tests
-      run: |
-        ./build/card-rpg-lab
+      working-directory: build
+      run: ./tests
+
+    - name: Clean build directory
+      run: make cleanall
