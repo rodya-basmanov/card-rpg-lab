@@ -1,7 +1,7 @@
 #include "Entity.h"
 #include <iostream>
 
-Entity::Entity(const std::string& name, int health, int mana) : name(name), health(health), mana(mana) {
+Entity::Entity(const std::string& name, int health, int mana, int defense) : name(name), health(health), mana(mana), defense(defense) {
     if (health > MAX_HEALTH) this->health = MAX_HEALTH; 
     if (mana > MAX_MANA) this->mana = MAX_MANA;
 }
@@ -12,9 +12,11 @@ void Entity::heal(int amount) {
     std::cout << name << " healed for " << amount  << " points!" << std::endl;
 }
 void Entity::takeDamage(int damage) {
-    health -= damage;
+    int finalDamage = damage - defense;
+    if (finalDamage < 0) finalDamage = 0;
+    health -= finalDamage;
     if (health < 0) health = 0;
-    std::cout << name << " took " << damage << " damage!" << std::endl;
+    std::cout << name << " took " << finalDamage << " damage!" << std::endl;
 }
 void Entity::reduceMana(int amount) {
     mana -= amount;
