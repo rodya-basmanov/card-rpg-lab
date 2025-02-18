@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(card-rpg-lab
     src/Entity.cpp
+    src/Character.cpp
+    src/Warrior.cpp
+    src/Mage.cpp
+    src/Fireball.cpp
 )
 
 target_include_directories(card-rpg-lab PUBLIC include)
@@ -17,6 +21,10 @@ include_directories(${GTEST_INCLUDE_DIRS})
 add_executable(tests
     tests/tests.cpp
     src/Entity.cpp
+    src/Character.cpp
+    src/Warrior.cpp
+    src/Mage.cpp
+    src/Fireball.cpp
 )
 
 target_include_directories(tests PUBLIC include)
@@ -29,4 +37,9 @@ target_link_libraries(card-rpg-lab
 target_link_libraries(tests
     ${GTEST_BOTH_LIBRARIES}
     pthread
+)
+add_custom_target(cleanall
+    COMMAND ${CMAKE_COMMAND} -E chdir ${CMAKE_SOURCE_DIR} ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}
+    COMMENT "Removing and recreating build directory"
 )
