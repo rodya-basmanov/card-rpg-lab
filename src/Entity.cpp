@@ -19,9 +19,15 @@ void Entity::takeDamage(int damage) {
     std::cout << name << " took " << finalDamage << " damage!" << std::endl;
 }
 void Entity::reduceMana(int amount) {
-    mana -= amount;
-    if (mana < 0) mana = 0;
-    std::cout << name << " spent " << amount << " mana!" << std::endl;
+    if (amount > 0) {
+        mana -= amount;
+        if (mana < 0) mana = 0;
+        std::cout << name << " spent " << amount << " mana!" << std::endl;
+    } else if (amount < 0) {
+        mana -= amount;
+        if (mana > MAX_MANA) mana = MAX_MANA;
+        std::cout << name << " restored " << -amount << " mana!" << std::endl;
+    }
 }
 
 int Entity::getHealth() const {
@@ -29,4 +35,8 @@ int Entity::getHealth() const {
 }
 int Entity::getMana() const {
     return mana;
+}
+void Entity::setDefense(int def) {
+    defense = def;
+    std::cout << name << "'s defense is now " << defense << "!" << std::endl;
 }
