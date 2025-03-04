@@ -15,7 +15,8 @@ public:
     Entity(const std::string& name, int health, int mana, int defense = 0); 
     void heal(int amount);                                 
     void takeDamage(int damage);                           
-    void reduceMana(int amount);                           
+    void reduceMana(int amount);
+    void setDefense(int def);                           
     int getHealth() const;                                
     int getMana() const;       
     const std::string& getName() const { return name; }  
