@@ -1,0 +1,44 @@
+# Doxyfile for Card RPG Game
+
+# Project related settings
+PROJECT_NAME           = "Card RPG Game"
+PROJECT_NUMBER         = 1.0
+PROJECT_BRIEF          = "A turn-based card RPG game with abilities and AI opponents"
+OUTPUT_DIRECTORY       = docs/doxygen
+
+# Input files
+INPUT                  = include/ src/ README.md
+FILE_PATTERNS          = *.h *.cpp
+RECURSIVE              = YES
+USE_MDFILE_AS_MAINPAGE = README.md
+
+# Output formats
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+HTML_OUTPUT            = html
+
+# Extraction settings
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_PACKAGE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+
+# Diagrams and graphics
+HAVE_DOT               = YES
+UML_LOOK               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+DOT_IMAGE_FORMAT       = svg
+INTERACTIVE_SVG        = YES
+
+# Source browsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+
+# Other settings
+ALPHABETICAL_INDEX     = YES
+GENERATE_TREEVIEW      = YES
+SEARCHENGINE           = YES
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES 
