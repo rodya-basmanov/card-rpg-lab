@@ -4,3 +4,6 @@ The system consists of the following components:
 - **Character**: Represents the player and enemies.
 - **Ability/Card**: Cards and abilities (Fireball, IceSpike, etc.).
 - **Deck/Inventory**: Manages the player's deck and inventory.
+
+## Component Diagram
+![Component Diagram](./component_diagram.png)

@@ -13,10 +13,11 @@
  * @brief Constructor for BattleMode
  * @param p Shared pointer to the player character
  * @param e Shared pointer to the enemy character
+ * @param testMode Flag to set test mode for automated testing
  * @details Initializes a battle session between player and enemy characters
  */
-BattleMode::BattleMode(std::shared_ptr<Character> p, std::shared_ptr<Character> e)
-    : player(p), enemy(e) {}
+BattleMode::BattleMode(std::shared_ptr<Character> p, std::shared_ptr<Character> e, bool testMode)
+    : player(p), enemy(e), isTestMode(testMode), testRoundCounter(0) {}
 
 /**
  * @brief Starts the battle mode
@@ -33,7 +34,11 @@ void BattleMode::start() {
         enemy->setAI(std::make_shared<EasyAI>(enemy));
     }
 
-    while (player->isAlive() && enemy->isAlive()) {
+    while (!isFinished()) {
+        if (isTestMode) {
+            testRoundCounter++;
+        }
+        
         bool endTurn = true;
 
         try {
@@ -130,6 +135,11 @@ void BattleMode::update() {}
  * @details Displays options and processes player input to determine their action choice
  */
 BattleMode::BattleAction BattleMode::getPlayerChoice() const {
+    // В тестовом режиме всегда выбираем простую атаку для ускорения
+    if (isTestMode) {
+        return BattleAction::ATTACK;
+    }
+    
     int choice;
     while (true) {
         std::cout << "Choose an action:\n";
@@ -186,6 +196,11 @@ std::shared_ptr<Card> BattleMode::selectAbilityCard(Character& character) {
         std::cout << "No ability cards available!" << std::endl;
         return nullptr;
     }
+    
+    // В тестовом режиме всегда выбираем первую карту для ускорения
+    if (isTestMode && !deck->getCards().empty()) {
+        return deck->getCards()[0];
+    }
 
     std::cout << "Select an ability card to use:" << std::endl;
     auto cards = deck->getCards();
@@ -198,12 +213,11 @@ std::shared_ptr<Card> BattleMode::selectAbilityCard(Character& character) {
     std::cin >> index;
     if (index >= 0 && index < static_cast<int>(cards.size())) {
         auto selectedCard = cards[index];
-        deck->removeCard(selectedCard);
         return selectedCard;
-    } else {
-        std::cout << "Invalid selection!" << std::endl;
-        return nullptr;
     }
+
+    std::cout << "Invalid card selection. Using basic attack instead." << std::endl;
+    return nullptr;
 }
 
 /**
@@ -215,6 +229,18 @@ void BattleMode::useItemFromInventory(Character& character) {
     auto inventory = character.getInventory();
     if (!inventory || inventory->getItems().empty()) {
         std::cout << "No items available!\n";
+        return;
+    }
+    
+    // В тестовом режиме автоматически используем первый предмет
+    if (isTestMode) {
+        const auto& items = inventory->getItems();
+        if (!items.empty()) {
+            Item* selectedItem = items[0];
+            selectedItem->apply(character);
+            inventory->removeItem(selectedItem);
+            std::cout << "Used item: " << selectedItem->getName() << "\n";
+        }
         return;
     }
 

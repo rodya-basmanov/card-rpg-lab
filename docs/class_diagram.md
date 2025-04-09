@@ -7,3 +7,6 @@ The system's class hierarchy includes:
 - **Fireball, DefenseCard**: Specific card types.
 - **AI**: Base class for enemy AI.
 - **EasyAI, AdvancedAI, BossAI**: Specific AI implementations.
+
+## Class Diagram
+![Class Diagram](./class_diagram.png)

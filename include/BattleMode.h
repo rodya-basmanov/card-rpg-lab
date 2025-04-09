@@ -21,6 +21,15 @@ private:
     
     /** @brief Enemy character involved in battle */
     std::shared_ptr<Character> enemy;
+    
+    /** @brief Flag for testing to limit the number of battle rounds */
+    bool isTestMode;
+    
+    /** @brief Counter for the number of battle rounds in test mode */
+    int testRoundCounter;
+    
+    /** @brief Maximum number of battle rounds in test mode */
+    static const int MAX_TEST_ROUNDS = 3;
 
 public:
     /**
@@ -38,8 +47,9 @@ public:
      * @brief Constructor for BattleMode
      * @param p Player character
      * @param e Enemy character
+     * @param testMode Flag to set test mode for automated testing
      */
-    BattleMode(std::shared_ptr<Character> p, std::shared_ptr<Character> e);
+    BattleMode(std::shared_ptr<Character> p, std::shared_ptr<Character> e, bool testMode = false);
     
     /**
      * @brief Start the battle
@@ -55,10 +65,11 @@ public:
     
     /**
      * @brief Check if battle is finished
-     * @return True if either the player or enemy is defeated
+     * @return True if either the player or enemy is defeated or max rounds reached in test mode
      */
     bool isFinished() const override {
-        return !player->isAlive() || !enemy->isAlive();
+        return !player->isAlive() || !enemy->isAlive() || 
+               (isTestMode && testRoundCounter >= MAX_TEST_ROUNDS);
     }
     
     /**

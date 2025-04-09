@@ -311,16 +311,38 @@ TEST(ExplorationModeTest, EventGeneration) {
     auto player = std::make_shared<Warrior>("Hero", 100, 0, 20, 10);
     ExplorationMode exploration(player);
 
-    std::stringstream input;
-    input << "1\n";
-    std::cin.rdbuf(input.rdbuf());
+    // Устанавливаем фиксированное семя для воспроизводимости результатов теста
+    std::srand(12345);
     
-    testing::internal::CaptureStdout();
-    exploration.generateRandomEvent();
-    std::string output = testing::internal::GetCapturedStdout();
+    // Сохраняем текущий буфер cin
+    std::streambuf* oldCin = std::cin.rdbuf();
     
-    EXPECT_TRUE(output.find("found") != std::string::npos || 
-               output.find("attacks") != std::string::npos);
+    try {
+        // Подготовим входные данные для всех возможных взаимодействий
+        std::stringstream input;
+        // Для BattleMode (если выпадет событие с боем)
+        input << "1\n1\n1\n1\n1\n1\n1\n1\n1\n1\n"; // Достаточно ввода "1" для нескольких ходов
+        std::cin.rdbuf(input.rdbuf());
+        
+        testing::internal::CaptureStdout();
+        exploration.generateRandomEvent();
+        std::string output = testing::internal::GetCapturedStdout();
+        
+        // Проверяем, что вывод содержит ожидаемые строки
+        EXPECT_TRUE(output.find("found") != std::string::npos || 
+                   output.find("attacks") != std::string::npos);
+                   
+        // Проверяем, что тест не создал бесконечного цикла
+        EXPECT_TRUE(output.size() < 10000); // Разумное ограничение на размер вывода
+    }
+    catch (...) {
+        // Восстанавливаем стандартный ввод независимо от результата
+        std::cin.rdbuf(oldCin);
+        throw; // Перебрасываем исключение
+    }
+    
+    // Восстанавливаем стандартный ввод
+    std::cin.rdbuf(oldCin);
 }
 TEST(DeckTest, CardManagement) {
     Deck deck;
