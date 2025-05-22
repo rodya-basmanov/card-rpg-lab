@@ -80,7 +80,14 @@ void ExplorationMode::generateRandomEvent() {
         case 2: {
             std::cout << "An enemy attacks you!\n";
             auto enemy = generateRandomEnemy();
+            
+            #ifdef TESTING
+            // В тестовой среде используем тестовый режим для BattleMode
+            BattleMode battle(player, enemy, true);
+            #else
             BattleMode battle(player, enemy);
+            #endif
+            
             battle.start();
 
             if (!enemy->isAlive()) {

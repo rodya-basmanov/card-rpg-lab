@@ -92,6 +92,8 @@ add_executable(tests
     tests/tests.cpp
 )
 
+target_compile_definitions(tests PRIVATE TESTING)
+
 target_link_libraries(tests
     card-rpg-core
     GTest::GTest
